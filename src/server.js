@@ -10,7 +10,7 @@ app.get('/', (req, res, next) => {
     //Check if user has been authorized
     const user = req.user;
 
-    //if user is not fund, redirect to auth server
+    //if user is not found, redirect to auth server
     if (!user) {
         return res.redirect('http://sso.devclub.in/auth/');
     } 
