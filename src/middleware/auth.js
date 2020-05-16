@@ -5,9 +5,9 @@ const auth = async (req, res, next) => {
 
     const { token, rememberme } = req.cookies;
 
-    if(!rememberme) {
+    if (!rememberme) {
         req.user = null;
-        next();
+        return res.redirect('login');
     }
 
     const config = {

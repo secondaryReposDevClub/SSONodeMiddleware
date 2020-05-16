@@ -33,16 +33,15 @@ app.set('view engine', 'ejs');
 app.set('views', `${__dirname}/views`);
 app.use(express.static(`${__dirname}/public`));
 
+app.get('/login', (req, res) => {
+    res.render('login');
+})
+
 app.get('/', auth, (req, res) => {
 
     //we must have the user in req.user by now
     const user = req.user;
-    if (user) {
-        return res.render('index', {user});
-    }
-
-    // else we need to display login page
-    res.render('login');
+    res.render('index', { user });
 });
 
 
