@@ -40,6 +40,7 @@ body {
 }
 
 .note {
+    margin: 10px 0;
     padding: 1rem 1rem 1rem 1rem;
     border-radius: 10px;
     background-color: rgb(45, 49, 66);
