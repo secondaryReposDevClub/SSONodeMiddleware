@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
     const config = {
         headers: {
             'access-token': token ? token : 'placeholder',
-            'refresh-token': newrefresh
+            'refresh-token': rememberme
         },
     };
 
