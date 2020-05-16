@@ -5,15 +5,13 @@ const auth = async (req, res, next) => {
 
     const { token, rememberme } = req.cookies;
 
-    // only keep this option when working with html/ejs applications
-    if (!token) {
-        return next();
-    }
+    const newtoken = token ? token : '12345';
+    const newrefresh = rememberme ? rememberme : '12345';
 
     const config = {
         headers: {
-            'access-token': token,
-            'refresh-token': rememberme
+            'access-token': newtoken,
+            'refresh-token': newrefresh
         },
     };
 
