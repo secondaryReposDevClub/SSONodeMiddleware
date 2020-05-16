@@ -34,7 +34,7 @@ app.set('view engine', 'ejs');
 app.set('views', `${__dirname}/views`);
 app.use(express.static(`${__dirname}/public`));
 
-app.get('/', auth,(req, res) => {
+app.get('/', auth, (req, res) => {
 
     //we must have the user in req.user by now
     const user = req.user;
