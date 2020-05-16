@@ -5,12 +5,14 @@ const auth = async (req, res, next) => {
 
     const { token, rememberme } = req.cookies;
 
-    const newtoken = token ? token : '12345';
-    const newrefresh = rememberme ? rememberme : '12345';
+    if(!rememberme) {
+        req.user = null;
+        next();
+    }
 
     const config = {
         headers: {
-            'access-token': newtoken,
+            'access-token': token ? token : 'placeholder',
             'refresh-token': newrefresh
         },
     };
@@ -22,9 +24,11 @@ const auth = async (req, res, next) => {
         const { data } = await axios.post('http://localhost:3000/auth/verify-token', body, config); // leave an empty body
         req.user = data.user;
         next();
+
     } catch (err) {
         res.clearCookie('token');
-        next(err);
+        req.user = null;
+        next();
     }
 }
 

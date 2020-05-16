@@ -4,7 +4,6 @@ const axios = require('axios');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const notesRoutes = require('./routes/notes');
 const auth = require('./middleware/auth');
 
 const port = 5000;
@@ -39,15 +38,13 @@ app.get('/', auth, (req, res) => {
     //we must have the user in req.user by now
     const user = req.user;
     if (user) {
-        return res.render('index');
+        return res.render('index', {user});
     }
 
     // else we need to display login page
     res.render('login');
 });
 
-// route requests to the notes router
-app.use('/notes', notesRoutes);
 
 app.listen(port, () => {
     console.log(`Test server up and running on port:${port}`);
