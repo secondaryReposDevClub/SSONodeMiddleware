@@ -16,7 +16,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // post route to add a new note
-router.post('/add', auth,(req, res) => {
+router.post('/add', auth,async (req, res) => {
     const user_id = req.user.id;
     try {
         const foundnotes = await Note.findOne({ user_id: user_id });
