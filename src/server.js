@@ -65,8 +65,11 @@ const auth = async (req, res, next) => {
 app.get('/', (req, res) => {
     //we must have the user in req.user by now
     const user = req.user;
+    if (user) {
+        return res.render('index');
+    }
 
-    return res.render('index');
+    res.render('login');
 });
 
 app.get('/home', (req, res) => {
