@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const axios = require('axios');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const auth = require('./middleware/auth');
+
+const notes = require('./routes/notes.js');
 
 const port = 5000;
 const app = express();
@@ -47,6 +48,8 @@ app.get('/home', auth, (req, res) => {
     const user = req.user;
     res.render('home', { user });
 })
+
+app.use('/notes', auth, notes);
 
 
 app.listen(port, () => {
