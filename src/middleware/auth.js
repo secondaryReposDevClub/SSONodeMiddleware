@@ -1,5 +1,5 @@
 // middleware function to use to interact with auth server
-const auth  = (req,res,next) => {
+const auth  = async (req,res,next) => {
 
     const { token } = req.cookies;
 
