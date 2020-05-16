@@ -3,12 +3,17 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>SSO Test Server</title>
-        <h1>Hello, <%= user.email %></h1>
-        <h1>Your email is : <%= user.firstname %></h1>
+        <link rel="stylesheet" href="/css/index.css" />
+
+        <title>SSO Login</title>
     </head>
     <body>
-        <h1>Welcome to the Test server!</h1>
-        <p><a href="/notes">Click here</a> to manage and view your notes</p>
+        <div class="rootContainer">
+            <h1>Oops! It seems like you are not logged in :(</h1>
+            <a href="http://localhost:3000/user/login?serviceURL=http://localhost:5000">
+                <div id="loginBtn">Login with <b>CASI</b></div>
+            </a>
+            <!-- <p>Don't have an account? <a href="#">Sign Up!</a></p> -->
+        </div>
     </body>
 </html>

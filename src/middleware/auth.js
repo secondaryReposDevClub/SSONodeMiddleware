@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
         const config = {
             headers: {
                 'access-token': token ? token : 'placeholder',
-                'refresh-token': rememberme
+                'refresh-token': rememberme ? rememberme : 'placeholder',
             },
         };
 
@@ -23,11 +23,19 @@ const auth = async (req, res, next) => {
         } catch (err) {
             res.clearCookie('token');
             req.user = null;
-            next();
+            if (req.originalURL === '/') {
+                next();
+            } else {
+                res.redirect('/');
+            }
         }
     } else {
         req.user = null;
-        res.redirect('/');
+        if (req.originalUrl === '/') {
+            next();
+        } else {
+            res.redirect('/');
+        }
     }
 }
 

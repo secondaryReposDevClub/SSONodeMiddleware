@@ -36,7 +36,7 @@ app.use(express.static(`${__dirname}/public`));
 app.get('/', auth, (req, res) => {
     const { user } = req;
     if (typeof user === 'undefined' || !user) {
-        res.render('login');
+        res.render('index');
     } else {
         res.redirect('/home');
     }
@@ -45,7 +45,7 @@ app.get('/', auth, (req, res) => {
 app.get('/home', auth, (req, res) => {
     //we must have the user in req.user by now
     const user = req.user;
-    res.render('index', { user });
+    res.render('home', { user });
 })
 
 
