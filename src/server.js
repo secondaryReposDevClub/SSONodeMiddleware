@@ -1,19 +1,38 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const axios = require('axios');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const notesRoutes = require('./routes/notes');
 
 const port = 5000;
 const app = express();
 
+require('dotenv').config({ path: `${__dirname}/../.env` });
+// extract Database URL from the environment variables
+const db_url = process.env.DB_URL;
+
+mongoose
+    .connect(db_url, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log('Connected to the database...');
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+
 app.use(cors());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded());
 
 app.set('view engine', 'ejs');
 app.set('views', `${__dirname}/views`);
 
-
-// this the middleware every client will need and thats it.
+// this is the middleware every client will need and thats it.
 const auth = async (req, res, next) => {
     const { token } = req.cookies;
 
@@ -25,34 +44,36 @@ const auth = async (req, res, next) => {
 
     const config = {
         headers: {
-            'auth-token': token
-        }
-    }
+            'auth-token': token,
+        },
+    };
 
     try {
         // we have the token, so verify it
-        const body = '' // empty body as we don't need to send anything
+        const body = ''; // empty body as we don't need to send anything
 
         const { data } = await axios.post('http://localhost:3000/auth', body, config); // leave an empty body
-        req.user = data.user
+        req.user = data.user;
         next();
-    }
-    catch (err) {
+    } catch (err) {
         res.clearCookie('token');
         next(err);
     }
-}
+};
 
-app.get('/', auth, (req, res) => {
-    // we must have the user in req.user by now
+app.get('/', (req, res) => {
+    //we must have the user in req.user by now
     const user = req.user;
 
-    return res.render('index', { user })
+    return res.render('index');
 });
 
-app.get('/home',(req, res) => {
+app.get('/home', (req, res) => {
     res.send('Home page');
 });
+
+// route requests to the notes router
+app.use('/notes', notesRoutes);
 
 app.listen(port, () => {
     console.log(`Test server up and running on port:${port}`);
