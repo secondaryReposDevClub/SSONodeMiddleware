@@ -41,7 +41,7 @@ body {
 
 .note {
     margin: 10px 0;
-    padding: 1rem 1rem 1rem 1rem;
+    padding: 0.2rem 1rem 1rem 1rem;
     border-radius: 10px;
     background-color: rgb(45, 49, 66);
     color: white;
@@ -49,6 +49,9 @@ body {
 }
 
 .note-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0 0 0.5rem 0;
     font-size: 30px;
     border-bottom: 1px solid white;
@@ -61,13 +64,9 @@ body {
 }
 
 .note .delBtn {
-    position: absolute;
-    right: 1rem;
-    top: 0;
     border-radius: 10px;
     border: none;
     padding: 0.2rem 1rem;
-    margin-top: 1rem;
     font-size: 20px;
     background: #d62839;
     color: white;
@@ -77,4 +76,33 @@ body {
 .note .delBtn:hover {
     background: #6d1821;
     cursor: pointer;
+}
+
+@media (max-width: 1250px) {
+    .notes {
+        width: 60vw;
+        margin-left: 20vw;
+    }
+}
+
+@media (max-width: 950px) {
+    .notes {
+        width: 70vw;
+        margin-left: 15vw;
+    }
+}
+
+@media (max-width: 700px) {
+    .notes {
+        width: 80vw;
+        margin-left: 10vw;
+    }
+
+    .note .delBtn {
+        font-size: 15px;
+    }
+
+    .note-heading {
+        font-size: 30px;
+    }
 }

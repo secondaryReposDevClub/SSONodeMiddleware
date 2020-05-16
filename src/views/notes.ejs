@@ -16,13 +16,13 @@
             <div class="note">
                 <div class="note-heading">
                     <h5><%= note.noteHeading %></h5>
+                    <form action="/notes/delete/<%=note._id%>" method="post">
+                        <button type="submit" class="delBtn">Delete Note</button>
+                    </form>
                 </div>
                 <div class="note-body">
                     <p><%= note.noteBody %></p>
                 </div>
-                <form action="/notes/delete/<%=note._id%>" method="post">
-                    <button type="submit" class="delBtn">Delete Note</button>
-                </form>
             </div>
             <% }); %>
         </div>
