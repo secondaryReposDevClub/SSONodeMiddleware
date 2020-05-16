@@ -31,6 +31,7 @@ app.use(bodyParser.urlencoded());
 
 app.set('view engine', 'ejs');
 app.set('views', `${__dirname}/views`);
+app.use(express.static(`${__dirname}/public`));
 
 // this is the middleware every client will need and thats it.
 const auth = async (req, res, next) => {

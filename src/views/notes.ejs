@@ -3,17 +3,25 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/css/main.css" />
+
         <title>Test Server - Notes</title>
     </head>
     <body>
-        <a href="/notes/add">Create New Note</a>
+        <div class="heading">
+            <a href="/notes/add" class="btn" id="createBtn">Create New Note</a>
+        </div>
         <div class="notes">
             <% notes.forEach(function(note) { %>
             <div class="note">
-                <h5><%= note.noteHeading %></h5>
-                <p><%= note.noteBody %></p>
+                <div class="note-heading">
+                    <h5><%= note.noteHeading %></h5>
+                </div>
+                <div class="note-body">
+                    <p><%= note.noteBody %></p>
+                </div>
                 <form action="/notes/delete/<%=note._id%>" method="post">
-                    <button type="submit">Delete Note</button>
+                    <button type="submit" class="delBtn">Delete Note</button>
                 </form>
             </div>
             <% }); %>
