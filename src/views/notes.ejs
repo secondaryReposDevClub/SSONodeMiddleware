@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Test Server - Notes</title>
+    </head>
+    <body>
+        <a href="/notes/add">Create New Note</a>
+        <div class="notes">
+            <% notes.forEach(function(note) { %>
+            <div class="note">
+                <h5><%= note.noteHeading %></h5>
+                <p><%= note.noteBody %></p>
+                <form action="/notes/delete/<%=note._id%>" method="post">
+                    <button type="submit">Delete Note</button>
+                </form>
+            </div>
+            <% }); %>
+        </div>
+    </body>
+</html>
