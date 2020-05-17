@@ -51,6 +51,11 @@ app.get('/home', auth, (req, res) => {
 
 app.use('/notes', auth, notes);
 
+app.get('/logout', (req,res) => {
+    res.clearCookie('token');
+    res.clearCookie('rememberme');
+    res.redirect('/');
+})
 
 app.listen(port, () => {
     console.log(`Test server up and running on port:${port}`);

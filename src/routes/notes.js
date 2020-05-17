@@ -20,13 +20,14 @@ router.get('/', auth, async (req, res) => {
 });
 
 // post route to add a new note
-router.post('/addNote', async (req, res, next) => {
+router.post('/addNote', auth, async (req, res) => {
     const user_id = req.user.id;
     const {
         noteHeading, noteBody
     } = req.body;
     try {
         const foundnotes = await Note.findOne({ user_id: user_id });
+
         if (!foundnotes) {
             insertNote = new Note({
                 user_id,
@@ -35,7 +36,7 @@ router.post('/addNote', async (req, res, next) => {
                     noteBody,
                 }],
             })
-            insertNote.save();
+            await insertNote.save();
         } else {
             const newNote = {
                 noteHeading,
@@ -49,14 +50,13 @@ router.post('/addNote', async (req, res, next) => {
     }
 });
 
-router.post('/delete/:id', async (req, res, next) => {
+router.post('/delete/:id', auth, async (req, res) => {
     const { id } = req.params;
-    console.log(id)
     const { uid } = req.user.id;
     try {
-        Note.deleteOne({
+        await Note.deleteOne({
             notes: {
-                id
+                _id : id
             },
             user_id: uid
         })
