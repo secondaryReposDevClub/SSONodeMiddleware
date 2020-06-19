@@ -17,6 +17,8 @@ const db_url = process.env.DB_URL;
 mongoose
     .connect(db_url, {
         useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
         useUnifiedTopology: true,
     })
     .then(() => {
@@ -47,15 +49,15 @@ app.get('/home', auth, (req, res) => {
     //we must have the user in req.user by now
     const user = req.user;
     res.render('home', { user });
-})
+});
 
 app.use('/notes', auth, notes);
 
-app.get('/logout', (req,res) => {
+app.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.clearCookie('rememberme');
     res.redirect('/');
-})
+});
 
 app.listen(port, () => {
     console.log(`Test server up and running on port:${port}`);
