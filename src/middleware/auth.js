@@ -21,12 +21,12 @@ const maxTTL = 20 * 60; // 5 minutes
 
 // Url for handling redirects, if none is provided than the user will automatically be redirected
 // to the SSO Login Page
-const redirectUrl = null;
+const redirectURL = '/';
 // Array of public paths, these paths will be available without logging in
 const publicPaths = [];
 
 // Push the redirectURL to public paths array as the redirectURL should be accessible to all users
-publicPaths.push(redirectUrl);
+publicPaths.push(redirectURL);
 
 const auth = async (req, res, next) => {
     // Extract tokens from cookies
@@ -61,7 +61,7 @@ const auth = async (req, res, next) => {
             // If the requested URL is a public path, proceed without any checks
             if (publicPaths.indexOf(req.originalUrl) !== -1) next();
             else {
-                if (redirectUrl != null) res.redirect(redirectUrl);
+                if (redirectURL != null) res.redirect(redirectURL);
                 else res.redirect(SSO_Login_URL + clientURL + req.originalUrl);
             }
         }
@@ -71,7 +71,7 @@ const auth = async (req, res, next) => {
         if (publicPaths.indexOf(req.originalUrl) !== -1) {
             next();
         } else {
-            if (redirectUrl != null) res.redirect(redirectUrl);
+            if (redirectURL != null) res.redirect(redirectURL);
             else res.redirect(SSO_Login_URL + clientURL + req.originalUrl);
         }
     }
