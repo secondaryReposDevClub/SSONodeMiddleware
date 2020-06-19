@@ -1,6 +1,7 @@
 # SSO Node.js Middleware
 
-This repo consists of a simple example to showcase how to use and implement the node middleware for the DevClub SSO.
+This repo consists of a simple example to showcase how to use and implement the node middleware for the DevClub SSO.   
+[Link to SSO Server](https://github.com/devclub-iitd/SingleSignOn)  
 
 ## Prerequisites to use the SSO Server:
 
