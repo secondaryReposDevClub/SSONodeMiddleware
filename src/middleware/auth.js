@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 // SSO Url for refreshing tokens that are about to expire
-const SSO_Refresh_URL = 'http://localhost:8000/auth/refresh-token';
-const SSO_Login_URL = 'http://localhost:8000/user/login?serviceURL=';
+const SSO_Refresh_URL = 'https://auth.devclub.in/auth/refresh-token';
+const SSO_Login_URL = 'https://auth.devclub.in/user/login?serviceURL=';
 
 // Client url, this string should be equal to the exact base URL of the client
 const clientURL = 'http://localhost:5000';
@@ -22,8 +22,8 @@ const maxTTL = 2 * 60; // 5 minutes
 // Url for handling redirects, if none is provided than the user will automatically be redirected
 // to the SSO Login Page
 const redirectURL = '/';
-// Array of public paths, these paths will be available without logging in
-const publicPaths = [];
+// Array of public paths, these paths will be available without logging in and even for users that do not have sufficient permisisons
+const publicPaths = ['/'];
 
 const UnauthorizedHandler = (req,res) => {
     return res.status(401).send("Alas You are out of scope! Go get some more permissions dude");
@@ -33,9 +33,6 @@ const ROLES = {
     '*' : ['external_user'],
     '/admin': ['dc_core','admin']
 }
-
-// Push the redirectURL to public paths array as the redirectURL should be accessible to all users
-publicPaths.push(redirectURL);
 
 const auth = async (req, res, next) => {
     // Extract tokens from cookies
@@ -89,6 +86,7 @@ const auth = async (req, res, next) => {
 };
 
 const isAuthorized = (req,user) => {
+    if(publicPaths.includes(req.url)) return true;
     if(Object.keys(ROLES).includes(req.url)){
         for (const index in ROLES[req.url]) {
             if (!user.roles.includes(ROLES[req.url][index])) return false;
