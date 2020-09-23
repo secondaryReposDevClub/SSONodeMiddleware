@@ -23,16 +23,17 @@ const maxTTL = 2 * 60; // 5 minutes
 // to the SSO Login Page
 const redirectURL = '/';
 // Array of public paths, these paths will be available without logging in and even for users that do not have sufficient permisisons
-const publicPaths = ['/'];
+const publicPaths = ['^/public.*','^/asset.*','^/$'];
 
 const UnauthorizedHandler = (req,res) => {
     return res.status(401).send("Alas You are out of scope! Go get some more permissions dude");
 }
 
 const ROLES = {
-    '*' : ['external_user'],
-    '/admin': ['dc_core','admin']
+    '^/admin.*': ['admin']
 }
+
+const defaultRoles = ['external_user'];
 
 const auth = async (req, res, next) => {
     // Extract tokens from cookies
@@ -75,7 +76,7 @@ const auth = async (req, res, next) => {
         res.clearCookie(accessTokenName);
         res.clearCookie(refreshTokenName);
         // If the requested URL is a public path, proceed without any checks
-        if (publicPaths.indexOf(req.originalUrl) !== -1) {
+        if (publicPaths.find(pathRegex => {return new RegExp(pathRegex).test(req.originalUrl)}) !== undefined) {
             next();
         } else {
             if (redirectURL != null) res.redirect(redirectURL);
@@ -86,17 +87,17 @@ const auth = async (req, res, next) => {
 };
 
 const isAuthorized = (req,user) => {
-    if(publicPaths.includes(req.url)) return true;
-    if(Object.keys(ROLES).includes(req.url)){
-        for (const index in ROLES[req.url]) {
-            if (!user.roles.includes(ROLES[req.url][index])) return false;
+    if (publicPaths.find(pathRegex => {return new RegExp(pathRegex).test(req.url)}) !== undefined) return true;
+    const match = Object.keys(ROLES).find(pathRegex => { return new RegExp(pathRegex).test(req.url) })
+    if(match){
+        for (const index in ROLES[match]) {
+            if (!user.roles.includes(ROLES[match][index])) return false;
         }
         return true;
     }
-    if(Object.keys(ROLES).includes('*')){
-        for (const index in ROLES['*']) {
-            if (!user.roles.includes(ROLES['*'][index])) return false;
-        }
+    
+    for (const index in defaultRoles) {
+        if (!user.roles.includes(defaultRoles[index])) return false;
     }
     return true;
 }
