@@ -37,15 +37,20 @@ app.use(auth);
 
 Several options have been included inside the `auth.js` file to help configure the client server. These have been documented below :
 
--   `SSO_Refresh_URL : String` : The url to which refresh token requests will be sent to when the token is about to expire.
--   `SSO_Login_URL : String` : The url to which users will be redirected to, if they have to login.
--   `clientURL : String` : The complete root address of the client service.
--   `accessTokenName : String` : The name of the JWT token cookie.
--   `refreshTokenName : String` : The name of the JWT 'remember me' style token. These tokens can remember the user for upto 2 days.
--   `publicKey` : An RSA public key provided by the SSO for verifying the token signature.
--   `maxTTL : number` : The maximum token age left after which a refresh request will be sent to `SSO_Refresh_URL`.
--   `redirectURL : String` : The URL for handling redirects if the token signature is corrupted or the user session expires or the token is simply, not available. If set to `null`, the user will simply be redirected to the `SSO_Login_URL` in case an error occurs.
--   `publicPaths [] : array<String>` : An array of public paths.
+1. **Sever Config Options** : These configuration options will be provided in the `config` file provided by CASI while registering the client
+    -   `SSO_Refresh_URL : String` : The url to which refresh token requests will be sent to when the token is about to expire.
+    -   `SSO_Login_URL : String` : The url to which users will be redirected to, if they have to login.
+    -   `clientURL : String` : The complete root address of the client service.
+    -   `accessTokenName : String` : The name of the JWT token cookie.
+    -   `refreshTokenName : String` : The name of the JWT 'remember me' style token. These tokens can remember the user for upto 2 days.
+    -   `maxTTL : number` : The maximum token age left after which a refresh request will be sent to `SSO_Refresh_URL`.
+    -   `redirectURL : String` : The URL for handling redirects if the token signature is corrupted or the user session expires or the token is simply, not available. If set to `null`, the user will simply be redirected to the `SSO_Login_URL` in case an error occurs.
+2. **Client Config Options** : These are some of the customizations that a client can utilize to fit its needs.
+    -   `publicKey` : The path to the RSA public key provided by the SSO for verifying the token signature.
+    -   `publicPaths : array<String>` : An array of regexes which will be checked against a path to determine if it is publicly accessible or not.
+    - `ROLES` : A dictionary mapping route regexes to corresponding role arrays. If the path accessed (`req.url`) regex-matches with any of the keys in this dictionary then the user is authorized if and only if he has all the roles specified in the corresponding value of the key (a role array). See `ROLES` in `auth.js` for an example.
+    - `defaultRoles : array<String>` : An array of roles that all authorized users should have when accessing non-public paths. 
+    - `UnauthorizedHandler` : This is a view that should be called if the user is unauthorized to access a given path.
 
 ## Implementation of public / private paths :
 
